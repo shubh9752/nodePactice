@@ -1,22 +1,22 @@
 const express=require('express');
 const app=express();
+
 const bodyParser=require('body-parser');
+const adminRoute=require('./routers/admin');
+const shopRoute=require('./routers/shop');
 // console.log(app);
 
 app.use(bodyParser.urlencoded({extended:false}));
 // app.use(bodyParser.json());
+app.use('/admin',adminRoute);
 
-app.get('/add-product',(req,res)=>{
-    console.log(`add product requested`);
-    res.send(`<form action="/product" method="POST"><input type="text" name="title" placeholder="enter product" /><input type="number" name="quantity" placeholder="enter product quantity or size" /><input type="submit" value="submit" /></form>`)
+app.use('/shop',shopRoute);
+
+app.use('*',(req,res)=>{
+    res.status(404).send(`<h1>page not found</h1>`);
 })
-app.post('/product',(req,res)=>{
-    console.log(req.body);
-    res.redirect('/');
-});
-app.use('/',(req,res)=>{
-    res.send('<h2>Product added succesfully</h2>')
-})
+
+
 app.listen(8080,()=>{
     console.log('Server is running on port 8080');
 })
