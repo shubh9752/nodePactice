@@ -6,6 +6,7 @@ const bodyParser=require('body-parser');
 const adminRoute=require('./routers/admin');
 const shopRoute=require('./routers/shop');
 const contact_us=require('./routers/contact_us');
+const errorController=require('./controllers/error')
 // console.log(app);
 
 app.use(bodyParser.urlencoded({extended:false}));
@@ -17,9 +18,7 @@ app.use('/shop',shopRoute);
 
 app.use(contact_us);
 
-app.use('*',(req,res)=>{
-    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
-})
+app.use('*',errorController.getError)
 
 
 app.listen(8080,()=>{
